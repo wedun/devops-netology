@@ -3,7 +3,16 @@
 Установил Windows Terminal
 Установил Ubuntu 20.04 по инструкции
 Протестировал команды "vagrant init", "vagrant up", "vagrant suspend", "vagrant halt"
-Ресурссы выданные по умолчанию:
+5. Ресурссы выданные по умолчанию:
 Base Memory: 1024 MB
 Processors: 2
 Disk SATA 64 GB
+6. Увеличить объём оперативной памяти можно следующим изменениями в конфиг файле
+ Vagrant.configure("2") do |config|
+ 	config.vm.box = "bento/ubuntu-20.04"
+	config.vm.provider "virtualbox" do |v|
+	  v.customize ["modifyvm", :id, "--memory", 4096]
+      v.customize ["modifyvm", :id, "--cpus", 1]
+	end
+ end
+Применить командой "vagrant reload"
