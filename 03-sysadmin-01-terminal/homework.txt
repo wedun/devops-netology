@@ -1,3 +1,9 @@
 Установил Vagrant
 Установил Virtual Box
-Протестировал команды "vagrant up", "vagrant suspend", "vagrant halt"
+Установил Windows Terminal
+Установил Ubuntu 20.04 по инструкции
+Протестировал команды "vagrant init", "vagrant up", "vagrant suspend", "vagrant halt"
+Ресурссы выданные по умолчанию:
+Base Memory: 1024 MB
+Processors: 2
+Disk SATA 64 GB
