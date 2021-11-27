@@ -1,0 +1,3 @@
+Установил Vagrant
+Установил Virtual Box
+Протестировал команды "vagrant up", "vagrant suspend", "vagrant halt"
