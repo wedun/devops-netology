@@ -43,9 +43,10 @@ set -euxo pipefail позволяет получить значения всех
 # 9.
 Самый популярный статус процессов в linux "S Interruptible sleep (waiting for an event to complete)"
 Дополнительна буквы означают:
-< high-priority (not nice to other users)
+```< high-priority (not nice to other users)
 N low-priority (nice to other users)
 L has pages locked into memory (for real-time and custom IO)
 s is a session leader
 l is multi-threaded (using CLONE_THREAD, like NPTL pthreads do)
-+ is in the foreground process group 
++ is in the foreground process group
+```
