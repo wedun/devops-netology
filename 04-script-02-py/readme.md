@@ -43,25 +43,83 @@ for result in result_os.split('\n'):
 
 ### Ваш скрипт:
 ```python
-???
+#!/usr/bin/env python3
+
+import os
+
+repo_path="~/devops-netology/"
+
+bash_command = ["cd ~/devops-netology", "git status"]
+result_os = os.popen(' && '.join(bash_command)).read()
+is_change = False
+
+for result in result_os.split('\n'):
+        if result.find('modified') != -1:
+            prepare_result = result.replace('\tmodified:   ', '')
+            print(repo_path + prepare_result)
 ```
 
 ### Вывод скрипта при запуске при тестировании:
 ```
-???
+laykomdn@rubius180:~/devops-netology/04-script-02-py$ ./task2.py
+~/devops-netology/04-script-02-py/task1.py
+~/devops-netology/04-script-02-py/task2.py
+laykomdn@rubius180:~/devops-netology/04-script-02-py$ git status
+On branch main
+Your branch is ahead of 'origin/main' by 1 commit.
+  (use "git push" to publish your local commits)
+
+Changes not staged for commit:
+  (use "git add <file>..." to update what will be committed)
+  (use "git restore <file>..." to discard changes in working directory)
+        modified:   task1.py
+        modified:   task2.py
+
+Untracked files:
+  (use "git add <file>..." to include in what will be committed)
+        ../03-sysadmin-02-terminal/out.txt
+        ../03-sysadmin-03-os/1/
+        ../03-sysadmin-03-os/2.txt
+
+no changes added to commit (use "git add" and/or "git commit -a")
 ```
 
 ## Обязательная задача 3
 1. Доработать скрипт выше так, чтобы он мог проверять не только локальный репозиторий в текущей директории, а также умел воспринимать путь к репозиторию, который мы передаём как входной параметр. Мы точно знаем, что начальство коварное и будет проверять работу этого скрипта в директориях, которые не являются локальными репозиториями.
 
 ### Ваш скрипт:
-```python
+#!/usr/bin/env python3
+
+import os
+import sys
+
+repo_path=sys.argv[1]
+
+if not os.path.exists(repo_path + '/.git'):
+    print("It is not repo")
+    sys.exit()
+
+path_var=f'cd {repo_path}'
+
+bash_command = [path_var, "git status"]
+result_os = os.popen(' && '.join(bash_command)).read()
+is_change = False
+
+for result in result_os.split('\n'):
+        if result.find('modified') != -1:
+            prepare_result = result.replace('\tmodified:   ', '')
+            print(repo_path + prepare_result)
 ???
 ```
 
 ### Вывод скрипта при запуске при тестировании:
 ```
-???
+laykomdn@rubius180:~$ ./task3.py ~/devops-netology/
+/home/laykomdn/devops-netology/04-script-02-py/readme.md
+/home/laykomdn/devops-netology/04-script-02-py/task1.py
+/home/laykomdn/devops-netology/04-script-02-py/task2.py
+laykomdn@rubius180:~$ ./task3.py ~/
+It is not repo
 ```
 
 ## Обязательная задача 4
