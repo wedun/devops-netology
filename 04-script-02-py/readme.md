@@ -88,6 +88,7 @@ no changes added to commit (use "git add" and/or "git commit -a")
 1. Доработать скрипт выше так, чтобы он мог проверять не только локальный репозиторий в текущей директории, а также умел воспринимать путь к репозиторию, который мы передаём как входной параметр. Мы точно знаем, что начальство коварное и будет проверять работу этого скрипта в директориях, которые не являются локальными репозиториями.
 
 ### Ваш скрипт:
+```python
 #!/usr/bin/env python3
 
 import os
@@ -127,12 +128,55 @@ It is not repo
 
 ### Ваш скрипт:
 ```python
-???
+#!/usr/bin/env python3
+
+import os
+import sys
+import time
+import socket
+import json
+
+dns = ["drive.google.com", "mail.google.com", "google.com"]
+ips = []
+
+while (1 == 1):
+    # Read json and compare dicts
+    with open('result.json') as fr:
+        pairsold = json.load(fr)
+
+    for d in dns:
+        ips.append(socket.gethostbyname(d))
+
+    # Convert 2 lists to dict
+    zip_iterator = zip(dns, ips)
+    pairs = dict(zip_iterator)
+
+    # Compare dicts
+    for key in pairsold:
+        oldip = pairsold[key]
+        newip = pairs[key]
+        if (oldip != newip):
+            print(f'[ERROR] {key} IP mismatch: {oldip} {newip}')
+        else:
+            print(f'{key} - {newip}')
+
+    with open('result.json', 'w') as fw:
+        json.dump(pairs, fw)
+    time.sleep(1)
 ```
 
 ### Вывод скрипта при запуске при тестировании:
 ```
-???
+laykomdn@rubius180:~/devops-netology/04-script-02-py$ ./task4.py
+drive.google.com - 64.233.165.194
+[ERROR] mail.google.com IP mismatch: 173.194.222.17 173.194.222.19
+[ERROR] google.com IP mismatch: 142.251.1.139 74.125.131.138
+drive.google.com - 64.233.165.194
+mail.google.com - 173.194.222.19
+google.com - 74.125.131.138
+drive.google.com - 64.233.165.194
+mail.google.com - 173.194.222.19
+google.com - 74.125.131.138
 ```
 
 ## Дополнительное задание (со звездочкой*) - необязательно к выполнению
