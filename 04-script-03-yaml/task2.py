@@ -4,6 +4,8 @@ import os
 import sys
 import time
 import socket
+import json
+import yaml
 
 dns = ["drive.google.com", "mail.google.com", "google.com"]
 
@@ -13,11 +15,14 @@ while (True):
 
         file = d + ".json"
         with open(file, 'w') as fw:
-            fw.write('{ ' + f'\"{d}\" : \"{ip}\"' + '}')
-            print('{ ' + f'\"{d}\" : \"{ip}\"' + '}')
+            data = {}
+            data[d] = ip
+            fw.write(json.dumps(data))
+            print(json.dumps(data))
 
         file = d + ".yaml"
         with open(file, 'w') as fw:
-            fw.write('- ' + f'{d}: {ip}')
-            print('- ' + f'{d}: {ip}')
+            data = [{d: ip}]
+            fw.write(yaml.dump(data))
+            print(yaml.dump(data))
     time.sleep(1)
