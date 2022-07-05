@@ -19,13 +19,12 @@ terraform apply --auto-approve
 ```
 Результат
 ```
-sudo docker node ls
+sudo docker node ls  
 ```
 ![task2.png](task2.png)
-```
 
 # Развернуть кластер мониторинга
-
+```
 sudo docker service ls
 ```
 ![task3.png](task3.png)
