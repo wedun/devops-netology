@@ -207,12 +207,13 @@ Plan Width - Ожидаемый средний размер строк, выво
 
 # Задача 6
 Создадим бекап:  
-pg_dump -U netologyuser test_db > /usr/local/pgsql/data/test_db.dump
-Остановим контейнер:
-docker-compose down
-Запустим новый инстанс postgresql с подключенный volume с резервными копиями и отключенный data volume
-psql -U netologyuser -d test_db -f /usr/local/pgsql/data/test_db.dump
-Статистика
+pg_dump -U netologyuser test_db > /usr/local/pgsql/data/test_db.dump  
+Остановим контейнер:  
+docker-compose down  
+Запустим новый инстанс postgresql с подключенный volume с резервными копиями и отключенный data volume  
+psql -U netologyuser -d test_db -f /usr/local/pgsql/data/test_db.dump  
+Статистика  
+```
 laykomdn@rubius180:~/devops-netology/06-db-02-sql$ docker exec -it 06-db-02-sql_postgres2_1 bash
 root@cde6f273cb95:/# psql -U netologyuser -d test_db
 psql (12.11 (Debian 12.11-1.pgdg110+1))
@@ -229,3 +230,4 @@ test_db=# \d
 (4 rows)
 
 test_db=#
+```
