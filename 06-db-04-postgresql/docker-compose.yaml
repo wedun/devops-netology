@@ -1,0 +1,13 @@
+version: "2"
+services:
+  postgres:
+    image: postgres:12
+    environment:
+      POSTGRES_DB: "netology"
+      POSTGRES_USER: "netologyuser"
+      POSTGRES_PASSWORD: "netologypass"
+    volumes:
+      - ./postgres_data:/var/lib/postgresql/data/
+      - ./postgres_backup:/usr/local/pgsql/data/
+    ports:
+      - "5432:5432"
