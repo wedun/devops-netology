@@ -218,4 +218,75 @@ curl -X GET 'http://localhost:9200/_cat/indices?v'
 health status index uuid                   pri rep docs.count docs.deleted store.size pri.store.size
 green  open   test  wuiFZ4XBSI6hkju5ug2hLQ   1   0          0            0       225b           225b
 ```
+Создайте snapshot состояния кластера elasticsearch  
+```
+curl -X PUT "localhost:9200/_snapshot/netology_backup/nl_snapshot?wait_for_completion=true&pretty"
+{
+  "snapshot" : {
+    "snapshot" : "nl_snapshot",
+    "uuid" : "AhG8Ds-JSS2QPGmLu-KSkw",
+    "repository" : "netology_backup",
+    "version_id" : 8020099,
+    "version" : "8.2.0",
+    "indices" : [
+      "test",
+      ".geoip_databases"
+    ],
+    "data_streams" : [ ],
+    "include_global_state" : true,
+    "state" : "SUCCESS",
+    "start_time" : "2022-07-14T14:55:34.727Z",
+    "start_time_in_millis" : 1657810534727,
+    "end_time" : "2022-07-14T14:55:35.728Z",
+    "end_time_in_millis" : 1657810535728,
+    "duration_in_millis" : 1001,
+    "failures" : [ ],
+    "shards" : {
+      "total" : 2,
+      "failed" : 0,
+      "successful" : 2
+    },
+    "feature_states" : [
+      {
+        "feature_name" : "geoip",
+        "indices" : [
+          ".geoip_databases"
+        ]
+      }
+    ]
+  }
+}
 
+ls -l /usr/share/elasticsearch/snapshots
+total 36
+-rw-r--r-- 1 elasticsearch elasticsearch   844 Jul 14 14:55 index-0
+-rw-r--r-- 1 elasticsearch elasticsearch     8 Jul 14 14:55 index.latest
+drwxr-xr-x 4 elasticsearch elasticsearch  4096 Jul 14 14:55 indices
+-rw-r--r-- 1 elasticsearch elasticsearch 18227 Jul 14 14:55 meta-AhG8Ds-JSS2QPGmLu-KSkw.dat
+-rw-r--r-- 1 elasticsearch elasticsearch   350 Jul 14 14:55 snap-AhG8Ds-JSS2QPGmLu-KSkw.dat
+```
+
+Удалите индекс test и создайте индекс test-2. Приведите в ответе список индексов.
+```
+curl -X PUT localhost:9200/test-2 -H 'Content-Type: application/json' -d'{ "settings": { "number_of_shards": 1,  "number_of_replicas": 0 }}'
+{
+  "acknowledged":true,
+  "shards_acknowledged":true,
+  "index":"test-2"
+}
+
+curl -X GET 'http://localhost:9200/_cat/indices?v'
+health status index  uuid                   pri rep docs.count docs.deleted store.size pri.store.size
+green  open   test-2 VkZk8YfORzW_S7PfTII6gA   1   0          0            0       225b           225b
+```
+
+Восстановите состояние кластера elasticsearch из snapshot, созданного ранее.
+```
+curl -X POST localhost:9200/_snapshot/netology_backup/nl_snapshot/_restore
+{"accepted":true}
+
+curl -X GET 'http://localhost:9200/_cat/indices?v'
+health status index  uuid                   pri rep docs.count docs.deleted store.size pri.store.size
+green  open   test   kay14RZHSWaqy9E-Wgr8xg   1   0          0            0       225b           225b
+green  open   test-2 VkZk8YfORzW_S7PfTII6gA   1   0          0            0       225b           225b
+```
