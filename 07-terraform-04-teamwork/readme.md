@@ -23,6 +23,7 @@ and found no differences, so no changes are needed.
 ```
 Результат:
 ![tfcloud.png](tfcloud.png)
+![tfcloudyc.png](tfcloudyc.png)
 
 ## Задача 2. Написать серверный конфиг для атлантиса.
 
@@ -71,4 +72,29 @@ projects:
   autoplan:
     when_modified: ["../modules/**/*.tf", "*.tf"]
     enabled: true
+```
+
+## Задача 3. Знакомство с каталогом модулей
+Изучите как устроен модуль. Задумайтесь, будете ли в своем проекте использовать этот модуль или непосредственно ресурс aws_instance без помощи модуля?  
+Предыдущее задание выполнял в Яндекс.Облаке, не могу проверить в AWS как работают модули. Могу предположить что использование модуля оправдано в проектах, где активно используются ec2 инстансы.  
+В рамках предпоследнего задания был создан ec2 при помощи ресурса aws_instance. Создайте аналогичный инстанс при помощи найденного модуля. (Пример конфигурации)
+```
+module "ec2_instance" {
+  source  = "terraform-aws-modules/ec2-instance/aws"
+  version = "~> 3.0"
+
+  name = "single-instance"
+
+  ami                    = "ami-ebd02392"
+  instance_type          = "t2.micro"
+  key_name               = "user1"
+  monitoring             = true
+  vpc_security_group_ids = ["sg-12345678"]
+  subnet_id              = "subnet-eddcdzz4"
+
+  tags = {
+    Terraform   = "true"
+    Environment = "dev"
+  }
+}
 ```
